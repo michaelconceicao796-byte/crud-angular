@@ -19,19 +19,19 @@
 
     <mat-header-cell *matHeaderCellDef class="action-column-header">
       <button mat-mini-fab color="accent" aria-label="Adicionar um curso"
-      (click)="onAdd()">
+      (click)="onAdd()" class="add-button">
         <mat-icon>add</mat-icon>
       </button>
     </mat-header-cell>
 
     <mat-cell *matCellDef="let curso" class="action-column">
       <button mat-icon-button color="primary" aria-label="Editar Curso"
-      (click)="onEdit(curso)">
+      (click)="onEdit(curso)" class="edit-button">
         <mat-icon>edit</mat-icon>
       </button>
 
       <button mat-icon-button color="warn" aria-label="Remover Curso"
-      (click)="onDelete(curso)">
+      (click)="onDelete(curso)" class="delete-button">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>

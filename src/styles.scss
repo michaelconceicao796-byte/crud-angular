@@ -2,3 +2,21 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.action-column .edit-button {
+  color: #1976d2;
+}
+
+.action-column .delete-button {
+  color: #e20909;
+}
+
+.action-column-header .add-button {
+  color: #ffffff;
+  background-color: #1976d2;
+}
+
+.mat-mini-fab.mat-accent {
+  background-color: #030608;
+  border: 20px;
+}
