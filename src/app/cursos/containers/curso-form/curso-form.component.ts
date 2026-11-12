@@ -28,19 +28,19 @@ export class CursoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const curso: Curso | undefined = this.route.snapshot.data['curso'];
+    const curso: Curso = this.route.snapshot.data['curso'];
 
 this.form = this.formBuilder.group({
   _id: [curso?._id ?? ''],
   name: [curso?.name ?? '', [
     Validators.required,
     Validators.minLength(5),
-    Validators.maxLength(100)
-  ]],
-  category: [curso?.category ?? '', [
-    Validators.required
-  ]]
+    Validators.maxLength(100)]],
+  category: [curso?.category ?? '', [Validators.required]],
+  lessons: this.formBuilder.array(this.retrieveLessons(curso))
 });
+  console.log(this.form);
+  console.log(this.form.value);
   }
 
   private retrieveLessons(curso: Curso) {
