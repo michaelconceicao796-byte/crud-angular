@@ -6,6 +6,7 @@ import { AppMaterialModule } from '../../../pasta/app-material/app-material-modu
 import { CursosService } from '../../services/cursos.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Curso } from '../../model/curso';
+import { Lesson } from '../../model/lesson';
 
 @Component({
   selector: 'app-curso-form',
@@ -16,38 +17,49 @@ import { Curso } from '../../model/curso';
 })
 export class CursoFormComponent implements OnInit {
 
-  form: FormGroup;
+      form!: FormGroup;
 
   constructor(
     private readonly formBuilder: NonNullableFormBuilder,
     private readonly service: CursosService,
     private readonly snackBar: MatSnackBar,
     private readonly location: Location,
-    private readonly route: ActivatedRoute,
-  ) {
-    this.form = this.formBuilder.group({
-      _id: [''],
-      name: ['', [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(100)]],
-      category: ['', [
-        Validators.required]],
-    });
+    private readonly route: ActivatedRoute,) {
   }
 
   ngOnInit(): void {
-  const curso: Curso | undefined = this.route.snapshot.data['curso'];
+    const curso: Curso | undefined = this.route.snapshot.data['curso'];
 
-    if(curso){
-    this.form.setValue({
-      _id: curso._id,
-      name: curso.name,
-      category: curso.category
-    });
-    console.log(curso);
+this.form = this.formBuilder.group({
+  _id: [curso?._id ?? ''],
+  name: [curso?.name ?? '', [
+    Validators.required,
+    Validators.minLength(5),
+    Validators.maxLength(100)
+  ]],
+  category: [curso?.category ?? '', [
+    Validators.required
+  ]]
+});
   }
+
+  private retrieveLessons(curso: Curso) {
+    const lessons = [];
+    if (curso?.lessons) {
+      curso.lessons.forEach(lesson => lessons.push(this.createLesson(lesson)));
+    } else {
+      lessons.push(this.createLesson());
     }
+    return lessons;
+  }
+
+  private createLesson(lesson: Lesson = {_id: '', name: '', youtubeUrl: '' }): FormGroup {
+    return this.formBuilder.group({
+      id: [lesson._id],
+      name: [lesson.name],
+      youtubeUrl: [lesson.youtubeUrl]
+    });
+  }
 
   onSubmit(): void {
     if (this.form.invalid) {
