@@ -42,6 +42,33 @@
         </mat-error>
       </mat-form-field>
 
+      <mat-toolbar appearance="fill" class="full-width">
+        <span>Aulas</span>
+        <button mat-icon-button color="accent">
+          <mat-icon aria-label="Adicionar uma nova aula">add</mat-icon>
+        </button>
+      </mat-toolbar>
+
+      <table style="width: 100%" formArrayName="lessons"
+      *ngFor="let lesson of getLessonsFormArray(); let i = index"
+      >
+        <tr [formGroupName]="i">
+          <td style="width: 65%">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Nome da Aula</mat-label>
+              <input matInput formControlName="name"/>
+            </mat-form-field>
+          </td>
+          <td style="width: 30%">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>URL</mat-label>
+              <span matPrefix>https://youtube.be/</span>
+              <input matInput formControlName="youtubeUrl"/>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+
       <mat-card-actions class="curso-actions">
         <button matButton="filled" type="submit">
           Salvar

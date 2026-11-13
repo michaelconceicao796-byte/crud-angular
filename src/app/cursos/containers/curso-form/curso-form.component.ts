@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NonNullableFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, FormGroup, Validators, UntypedFormArray } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { AppMaterialModule } from '../../../pasta/app-material/app-material-module';
@@ -59,6 +59,10 @@ this.form = this.formBuilder.group({
       name: [lesson.name],
       youtubeUrl: [lesson.youtubeUrl]
     });
+  }
+
+  getLessonsFormArray() {
+    return (<UntypedFormArray>this.form.get('lessons')).controls;
   }
 
   onSubmit(): void {
