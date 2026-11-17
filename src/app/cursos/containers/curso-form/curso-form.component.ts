@@ -37,7 +37,7 @@ this.form = this.formBuilder.group({
     Validators.minLength(5),
     Validators.maxLength(100)]],
   category: [curso?.category ?? '', [Validators.required]],
-  lessons: this.formBuilder.array(this.retrieveLessons(curso))
+  lessons: this.formBuilder.array(this.retrieveLessons(curso), Validators.required)
 });
   console.log(this.form);
   console.log(this.form.value);
@@ -56,8 +56,14 @@ this.form = this.formBuilder.group({
   private createLesson(lesson: Lesson = {_id: '', name: '', youtubeUrl: '' }): FormGroup {
     return this.formBuilder.group({
       id: [lesson._id],
-      name: [lesson.name],
-      youtubeUrl: [lesson.youtubeUrl]
+      name: [lesson.name, [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(100)]],
+      youtubeUrl: [lesson.youtubeUrl, [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(11)]]
     });
   }
 
@@ -76,21 +82,13 @@ this.form = this.formBuilder.group({
   }
 
   onSubmit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    this.service
-      .save(this.form.getRawValue())
-      .subscribe({
-        next: () => this.onSuccess(),
-        error: (error) => {
-          console.error('Erro ao salvar curso:', error);
-          this.onError();
-        }
-      });
+    if (this.form.valid) {
+    this.service.save(this.form.value)
+      .subscribe(result => this.onSuccess(), error => this.onError());
+  } else {
+    alert('Formulário inválido');
   }
+}
 
   onCancel(): void {
     this.location.back();
@@ -125,4 +123,8 @@ this.form = this.formBuilder.group({
     return 'Campo inválido';
   }
 
+  isFormArrayRequired() {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    return !lessons.valid && lessons.hasError('required') && lessons.touched;
+  }
 }
